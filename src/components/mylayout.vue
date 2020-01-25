@@ -68,6 +68,7 @@ body {
               <template slot="title">
                 <Icon type="ios-navigate"></Icon>测试工具
               </template>
+              <MenuItem name="encryptutil">加密/解密</MenuItem>
               <MenuItem name="filelist">文件列表</MenuItem>
               <MenuItem name="dblist">数据库源</MenuItem>
               <MenuItem name="dbselect">数据查询</MenuItem>
@@ -87,8 +88,6 @@ body {
               <template slot="title">
                 <Icon type="ios-briefcase" />工具集合
               </template>
-              <MenuItem name="encryptutil">加密/解密</MenuItem>
-              <MenuItem name="3-4">Time Util</MenuItem>
               <MenuItem name="3-5">Redis</MenuItem>
               <MenuItem name="3-6">Memecache</MenuItem>
             </Submenu>

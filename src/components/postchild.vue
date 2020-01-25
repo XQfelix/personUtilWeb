@@ -34,12 +34,15 @@
                 placeholder="输入对应的参数值"
               ></AutoComplete>
             </Col>
-            <Col span="8">
+            <Col span="7">
               <Input v-model="d.description"  placeholder="描述"/>
+            </Col>
+            <Col span="1">
+              <Button id="header" shape="circle" @click="remove(index)"><Icon type="md-remove" /></Button>
             </Col>
           </Row>
         </div>
-        <Button id="header" @click="add" type="primary">Add</Button>
+        <Button size="small" id="header" @click="add" type="primary"><Icon type="md-add" /></Button>
       </TabPane>
       <TabPane label="Body">
         <RadioGroup style="margin-bottom: 5px" v-model="bodyType">
@@ -203,6 +206,9 @@ export default {
       } else {
         this.paramValueArr.push({ key: "", value: "", description: "" });
       }
+    },
+    remove(e){
+      this.inputArr.splice(e, 1);
     },
     methodChange(item) {
       this.methodSelect = item;

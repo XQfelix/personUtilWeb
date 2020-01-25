@@ -27,13 +27,11 @@ export default {
           title: "文件名称",
           key: "filename",
           resizable: true,
-          width: 300
         },
         {
           title: "路径",
           key: "filepath",
           resizable: true,
-          width: 500
         },
         {
           title: "大小",

@@ -10,16 +10,18 @@
 <template>
   <div>
     <Row style="margin: 8px 0px" type="flex" :gutter="16">
-      <Col v-for="(db,index) in dbList" :key="index" :name="index" span="6">
+      <Col v-for="(db,index) in dbList" :key="index" :name="index" :md="12" :lg="6">
         <Card>
           <p slot="title">{{db.dbtype}} - {{db.dbusername}}</p>
           <p>类型: {{db.dbtype}}</p>
-          <p>地址: {{db.dburl}}</p>
+          <Tooltip max-width="400" :content="db.dburl">
+            <p>地址: {{db.dburl.substring(0, 15)}}...</p>
+          </Tooltip>
           <p>用户名: {{db.dbusername}}</p>
           <p>创建时间: {{db.dbcreatetime}}</p>
           <div class="dblist-btn">
             <Button @click="db.flag = true" size="small" type="primary">配置</Button>
-            <Button @click="dbtest(index)" size="small" type="primary">测试</Button>
+            <Button @click="dbtest(db)" size="small" type="primary">测试</Button>
             <Button @click="dbdelete(index)" size="small" type="error">删除</Button>
           </div>
         </Card>
@@ -54,7 +56,7 @@
           </div>
         </Modal>
       </Col>
-      <Col span="6">
+      <Col :md="12" :lg="6">
         <Card style="height: 203px; text-align:center; cursor:pointer">
           <Tooltip content="单击添加数据源" placement="right-end">
             <Icon
@@ -67,7 +69,7 @@
           <Modal title="配置详情" v-model="add.flag" :mask-closable="false" @on-ok="addok(add)">
             <div style="margin-top: 10px">
               类&nbsp;&nbsp;&nbsp; 型:
-              <Select v-model="add.dbtype" size="small" style="width:436px">
+              <Select @on-change="typeChange" v-model="add.dbtype" size="small" style="width:436px">
                 <Option
                   v-for="item in typeList"
                   :value="item.value"
@@ -123,8 +125,8 @@ export default {
           label: "PostGre"
         },
         {
-          value: "Sysbase",
-          label: "Sysbase"
+          value: "Sybase",
+          label: "Sybase"
         },
         {
           value: "MongoDB",
@@ -137,7 +139,8 @@ export default {
       ],
       add: {
         dbtype: "MySQL",
-        dburl: "",
+        dburl:
+          "jdbc:mysql://0.0.0.0:3306/database?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8",
         dbusername: "",
         dbpassword: "",
         dbcreatetime: "2019-12-30 12:12:12",
@@ -176,11 +179,67 @@ export default {
         flag: false
       };
     },
-    dbtest(index) {
-      this.$Message["success"]({
-        background: true,
-        content: "连接成功!"
-      });
+    typeChange(value) {
+      let val = value.toUpperCase();
+      switch (val) {
+        case "MYSQL":
+          this.add.dburl =
+            "jdbc:mysql://0.0.0.0:3306/database?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8";
+          break;
+        case "ORACLE":
+          this.add.dburl = "jdbc:oracle:thin:@host:port:SID";
+          break;
+        case "SQLSERVER":
+          this.add.dburl =
+            "jdbc:jtds:sqlserver://0.0.0.0:1433;DatabaseName=database";
+          break;
+        case "POSTGRE":
+          this.add.dburl = "jdbc:postgresql://0.0.0.0:5432/database";
+          break;
+        case "SYBASE":
+          this.add.dburl = "jdbc:jtds:sybase://0.0.0.0:5001/database";
+          break;
+        case "REDIS":
+          this.add.dburl = "ip:port";
+          break;
+        case "MONGODB":
+          this.add.dburl = "ip:port";
+          break;
+        default:
+          break;
+      }
+    },
+    dbtest(db) {
+      this.$Loading.start();
+      if (this.dbList.length > 0) {
+        this.request
+          .request(
+            "post",
+            this.baseUrl + "/person/dblist/connect",
+            "",
+            db
+          )
+          .then(res => {
+            this.$Loading.finish();
+            if (res.status != 200) {
+              this.$Message["error"]({
+                background: true,
+                content: res.data.message
+              });
+            } else {
+              this.$Message["success"]({
+                background: true,
+                content: "连接成功!"
+              });
+            }
+          });
+      } else {
+        this.$Loading.error();
+        this.$Message["error"]({
+          background: true,
+          content: "检查配置!"
+        });
+      }
     },
     // 获取所有数据源
     getAlldbs() {
