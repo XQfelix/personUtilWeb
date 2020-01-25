@@ -9,13 +9,15 @@ import VePie from 'v-charts/lib/pie.common'
 import VeHistogram from 'v-charts/lib/histogram.common'
 import axios from 'axios';
 
+
+
 Vue.component(VeLine.name, VeLine);
 Vue.component(VePie.name, VePie);
 Vue.component(VeHistogram.name, VeHistogram);
 Vue.config.productionTip = false;
 Vue.prototype.request = request;
 Vue.prototype.axios = axios;
-Vue.prototype.baseUrl = "http://127.0.0.1:1500";
+Vue.prototype.baseUrl = "http://39.105.35.188:1500";
 Vue.prototype.$Loading.config({
   color: '#19D4AE',
   height: 3
