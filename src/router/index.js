@@ -43,7 +43,7 @@ export default new Router({
       path: '/',
       name: 'mylayout',
       component: mylayout,
-      redirect: '/monitor',
+      redirect: '/encryptutil',
       children: [
         {
           path: '/postchild',

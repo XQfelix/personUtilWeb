@@ -3,11 +3,9 @@ body {
   height: 100%;
 }
 .layout {
-  height: 100%;
-  border: 1px solid #d7dde4;
+  /* border: 1px solid #d7dde4; */
   background: #f5f7f9;
   position: relative;
-  border-radius: 4px;
   overflow: hidden;
 }
 .layout-logo {
@@ -30,7 +28,7 @@ body {
 </style>
 <template>
   <div class="layout">
-    <Layout>
+    <Layout :style="{minHeight: '100vh'}">
       <Header>
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-logo">Utils</div>
@@ -101,7 +99,7 @@ body {
           </Menu>
         </Sider>
         <Layout :style="{padding: '8px'}">
-          <Content class="tt" :style="{height: '880px'}">
+          <Content>
             <router-view />
           </Content>
         </Layout>
