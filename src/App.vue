@@ -12,6 +12,6 @@ export default {
 
 <style>
 body{
-  max-height: 100%;
+  height: 100%;
 }
 </style>
